@@ -1,0 +1,74 @@
+{
+  "name": "koa-rest-api-es6",
+  "version": "0.0.1",
+  "description": "Koa & ES6 REST API",
+  "author": {
+    "name": "Damien Dell'Amico",
+    "email": "damien.dellamico@gmail.com",
+    "url": "https://github.com/ddellamico"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "prod": "node ./dist/index",
+    "babel": "./node_modules/.bin/babel src -d dist --source-maps",
+    "dev": "export DEBUG=krs:* && ./node_modules/.bin/nodemon -L --debug=5858 babel.js --ext 'js json'",
+    "clean": "rm -rvf dist",
+    "lint": "./node_modules/.bin/eslint --cache .",
+    "outdated": "npm outdated --depth 0",
+    "prepush": "npm shrinkwrap && npm test",
+    "postmerge": "npm install"
+  },
+  "pre-commit": [
+    "lint",
+    "outdated"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ddellamico/koa-rest-api-es6"
+  },
+  "engines": {
+    "node": ">=4.x",
+    "npm": ">=2.x"
+  },
+  "bugs": {
+    "url": "https://github.com/ddellamico/koa-rest-api-es6/issues"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "keywords": [
+    "koa",
+    "babel",
+    "es6",
+    "node"
+  ],
+  "dependencies": {
+    "debug": "*",
+    "dotenv": "^1.2.0",
+    "koa": "^2.0.0-alpha.3",
+    "koa-convert": "^1.2.0",
+    "koa-jwt": "^1.1.2",
+    "koa-logger": "^2.0.0",
+    "koa-passport": "^1.2.0",
+    "koa-router": "^7.0.1",
+    "mongoose": "^4.4.4",
+    "mongoose-validator": "^1.2.4"
+  },
+  "devDependencies": {
+    "babel-cli": "6.4.0",
+    "babel-eslint": "^5.0.0",
+    "babel-plugin-transform-es2015-spread": "^6.5.2",
+    "babel-preset-es2015-node4": "^2.0.3",
+    "babel-preset-stage-3": "^6.5.0",
+    "babel-register": "^6.5.2",
+    "eslint": "^1.10.3",
+    "eslint-config-airbnb": "5.0.1",
+    "eslint-plugin-react": "3.16.1",
+    "nodemon": "^1.9.0"
+  },
+  "license": {
+    "type": "MIT"
+  }
+}
