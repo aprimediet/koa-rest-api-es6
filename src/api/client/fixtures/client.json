@@ -1,0 +1,6 @@
+{
+  "name": "KraApp",
+  "id": "KraApp",
+  "secret": "secret",
+  "trusted": true
+}

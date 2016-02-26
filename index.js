@@ -1,15 +1,22 @@
 'use strict';
 
 import Koa from 'koa';
+import convert from 'koa-convert';
+import cors from 'koa-cors';
+import session from 'koa-generic-session';
 import koaRouter from 'koa-router';
-import logger from 'koa-logger';
+import koaLogger from 'koa-logger';
+import bodyParser from 'koa-bodyparser';
 import routing from './src/api/user/user.route';
 import config from './src/config/index';
 import pkg from './package.json';
-import debug from 'debug';
-import { connectDb, seedUsers, seedImages } from './src/db';
+import debugModule from 'debug';
+import logger from './src/utils/logger';
+import auth from './src/api/auth';
+import { connectDb, seedDb } from './src/db';
 
-const log = debug('krs:server');
+const debug = debugModule('krs:server');
+const log = logger(module);
 
 const banner = `
 *********************************************************************************************
@@ -21,39 +28,39 @@ const banner = `
 *********************************************************************************************`;
 
 const initServer = () => {
-    console.log(banner);
+    log.debug(banner);
+
+    const app = new Koa();
+    app.keys = ['secret'];
+
+    app.use(koaLogger());
+    app.use(convert(cors()));
+    app.use(convert(bodyParser()));
+    app.use(convert(session()));
+    app.use(auth());
 
     const router = routing(koaRouter());
-    const app = new Koa();
-
-    app.use(logger());
     app.use(router.routes());
     app.use(router.allowedMethods());
+    app.use(ctx => ctx.status = 404);
 
     (async() => {
         try {
             const info = await connectDb();
-            log(`Connected to ${info.host}:${info.port}/${info.name}`);
+            log.info(`Connected to ${info.host}:${info.port}/${info.name}`);
         } catch (ex) {
-            log('Unable to connect to database %s', ex);
+            debug('Unable to connect to database %s', ex);
         }
         try {
-            await seedUsers();
+            await seedDb();
         } catch (ex) {
-            log('Unable to connect to seed users %s', ex);
-        }
-
-        try {
-            await seedImages();
-        } catch (ex) {
-            log('Unable to connect to seed images %s', ex);
+            debug('Unable to connect to seed users %s', ex);
         }
 
         // Start up the server on the port specified in the config after we connected to mongodb
         app.listen(config.server.port, () => {
-            log(`App started on port ${config.server.port} with environment ${config.environment}`);
+            log.debug(`App started on port ${config.server.port} with environment ${config.environment}`);
         });
-
     })();
 };
 

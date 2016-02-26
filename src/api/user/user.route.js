@@ -2,10 +2,14 @@
 
 import User from './user.model.js';
 import debug from 'debug';
+import {token} from '../auth/oauth2';
 
 const log = debug('krs:user.route');
 
 export default (router) => {
+
+    router.post('/auth/token', token());
+
     router.get('/users', async(ctx) => {
         const users = await User.find({});
         if (users) {

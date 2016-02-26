@@ -23,7 +23,6 @@ const ClientSchema = new mongoose.Schema({
         default: false
     }
 }, {
-    versionKey: false,
     timestamps: {
         createdAt: 'created_at',
         updatedAt: 'updated_at'

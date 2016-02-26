@@ -1,0 +1,25 @@
+[
+  {
+    "_id": "5692820f7822e79322d671e1",
+    "provider": "local",
+    "firstName": "Damien",
+    "lastName": "Damien Dell'Amico",
+    "email": "damien.dellamico@gmail.com",
+    "password": "test",
+    "roles": [
+      "user",
+      "admin"
+    ],
+    "avatar": ""
+  },
+  {
+    "provider": "local",
+    "firstName": "user1",
+    "lastName": "lastname1",
+    "email": "user1@gmail.com",
+    "password": "test",
+    "roles": [
+      "user"
+    ]
+  }
+]
