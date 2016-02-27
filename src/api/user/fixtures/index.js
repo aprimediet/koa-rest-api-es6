@@ -6,10 +6,10 @@ import debug from 'debug';
 const log = debug('krs:user:fixture');
 
 export default () => {
-    (async() => {
-        await User.find({}).remove();
-        log('--> users removed');
-        await User.create(userFixtures);
-        log('--> users created');
-    })();
+  (async() => {
+    await User.find({}).remove();
+    log('--> users removed');
+    await User.create(userFixtures);
+    log('--> users created');
+  })();
 };

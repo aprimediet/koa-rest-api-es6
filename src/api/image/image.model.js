@@ -7,17 +7,17 @@ import User from '../user/user.model.js';
  * Image Schema
  */
 const ImageSchema = new mongoose.Schema({
-    fileName: {
-        type: String
+  fileName: {
+      type: String
     },
-    url: {
-        type: String,
-        trim: true,
-        required: true
+  url: {
+      type: String,
+      trim: true,
+      required: true
     },
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: User
+  user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: User
     }
 });
 

@@ -5,10 +5,8 @@
   },
   "rules": {
     "strict": 0,
-    "indent": 0,
     "comma-dangle": [2, "never"],
     "eol-last": 1, // enforce newline at the end of file, with no multiple empty lines
-    "no-console": 0, // disallow use of console (off by default in the node environment)
     "no-param-reassign": [2, { "props": false }]
   },
   "extends": "airbnb/base"

@@ -3,31 +3,31 @@
 import passport from 'koa-passport';
 import compose from 'koa-compose';
 import User from '../user/user.model';
-import basicStrategy from './strategies/client-basic';
-import debug from 'debug';
+import * as strategies from './strategies';
+import _debug from 'debug';
 
-const log = debug('krs:auth');
+const debug = _debug('krs:auth');
 
-passport.use('client-basic', basicStrategy);
+Object.keys(strategies).forEach(name => {
+  passport.use(name, strategies[name]);
+});
 
 passport.serializeUser((user, done) => done(null, user._id));
-
 passport.deserializeUser((id, done) => {
-    log('deserializeUser');
-    (async() => {
-        try {
-            const user = await User.findById(id);
-            done(null, user);
-        } catch (error) {
-            done(error);
-        }
-    })();
+  (async() => {
+    try {
+      const user = await User.findById(id);
+      done(null, user);
+    } catch (error) {
+      done(error);
+    }
+  })();
 });
 
 export default () => {
-    return compose([
-        passport.initialize(),
-        passport.session()
-    ]);
+  return compose([
+    passport.initialize(),
+    passport.session()
+  ]);
 };
 
