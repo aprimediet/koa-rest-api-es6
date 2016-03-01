@@ -13,15 +13,13 @@ Object.keys(strategies).forEach(name => {
 });
 
 passport.serializeUser((user, done) => done(null, user._id));
-passport.deserializeUser((id, done) => {
-  (async() => {
-    try {
-      const user = await User.findById(id);
-      done(null, user);
-    } catch (error) {
-      done(error);
-    }
-  })();
+passport.deserializeUser(async(id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
 });
 
 export default () => {
@@ -30,4 +28,3 @@ export default () => {
     passport.session()
   ]);
 };
-

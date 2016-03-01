@@ -1,6 +1,7 @@
 'use strict';
 
 import winston from 'winston';
+import path from 'path';
 
 winston.emitErrs = true;
 

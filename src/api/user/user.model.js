@@ -3,27 +3,23 @@
 import mongoose from 'mongoose';
 import validate from 'mongoose-validator';
 import bcrypt from 'bcrypt-as-promised';
-import debug from 'debug';
+import _debug from 'debug';
 
-const log = debug('krs:user.model');
+const debug = _debug('krs:user.model');
 const SALT_WORK_FACTOR = 10;
 
 const UserSchema = new mongoose.Schema({
-  firstName: {
+  name: {
     type: String,
     trim: true,
     required: true,
     minlength: 3
   },
-  lastName: {
+  username: {
     type: String,
     trim: true,
-    default: '',
+    required: true,
     minlength: 3
-  },
-  displayName: {
-    type: String,
-    trim: true
   },
   email: {
     type: String,
@@ -36,16 +32,22 @@ const UserSchema = new mongoose.Schema({
       message: 'Please fill in your email'
     })
   },
+  phone: {
+    type: String
+  },
+  website: {
+    type: String,
+    validate: validate({
+      validator: 'isURL',
+      message: 'Invalid website'
+    })
+  },
   password: {
     type: String,
     required: true
   },
   salt: {
     type: String
-  },
-  avatar: {
-    type: String,
-    default: 'http://lorempixel.com/400/200/abstract/1/'
   },
   provider: {
     type: String,
@@ -59,12 +61,30 @@ const UserSchema = new mongoose.Schema({
     }],
     default: ['user'],
     required: 'Please provide at least one role'
+  },
+  company: {
+    name: String,
+    catchPhrase: String,
+    bs: String
   }
 }, {
   timestamps: {
     createdAt: 'created_at',
     updatedAt: 'updated_at'
+  },
+  toJSON: {
+    transform(doc, ret) {
+      delete ret.password;
+      delete ret.salt;
+    }
   }
+});
+
+UserSchema.pre('validate', async function preValidate(next) {
+  if (this.isNew && !this.password) {
+    this.password = 'password';
+  }
+  next();
 });
 
 /**
@@ -77,11 +97,8 @@ UserSchema.pre('save', async function preSave(next) {
   if (!user.isModified('password')) return next();
 
   try {
-    const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
-    log('generate a salt --> %s', salt);
-    const hash = await bcrypt.hash(user.password, salt);
-    log('hash the password using our new salt --> %s', hash);
-    user.password = hash;
+    user.salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
+    user.password = await bcrypt.hash(user.password, user.salt);
     next();
   } catch (error) {
     next(error);

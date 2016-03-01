@@ -4,7 +4,7 @@ import passport from 'koa-passport';
 import jwt from 'jsonwebtoken';
 import oauth2orize from 'oauth2orize-koa';
 import compose from 'koa-compose';
-import Client from '../client/client.model';
+import Client from './model/client';
 import User from '../user/user.model';
 import RefreshToken from './model/refresh-token';
 import logger from '../../utils/logger';
@@ -32,7 +32,7 @@ async function generateTokens(user, client) {
   if (!user || !client) return false;
 
   const jwtToken = jwt.sign({ id: user._id, email: user.email },
-    config.secret, { expiresIn: config.tokenExpiration });
+    config.secret, { expiresIn: parseInt(config.tokenExpiration, 10) });
 
   await RefreshToken.findOneAndRemove({ user: user._id });
 
@@ -48,6 +48,7 @@ server.exchange(oauth2orize.exchange.password(async(client, email, password) => 
 
   try {
     const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user) return false;
     const isMatch = await user.comparePassword(password);
     if (!isMatch) return false;
     debug('Valid credentials');
@@ -63,6 +64,9 @@ server.exchange(oauth2orize.exchange.refreshToken(async(client, refreshToken) =>
 
   debug('Start refresh token exchange for client --> %s', client._id);
 
+  // TODO encrypt refresh token es:
+  // var accessTokenHash = crypto.createHash('sha1').update(newAccessToken).digest('hex')
+  // https://github.com/reneweb/oauth2orize_resource_owner_password_example/blob/master/oauth.js
   try {
     const refToken = await RefreshToken.findOne({ token: refreshToken, client: client._id });
     if (!refToken) {
@@ -87,7 +91,7 @@ server.exchange(oauth2orize.exchange.refreshToken(async(client, refreshToken) =>
 
 export function token() {
   return compose([
-    passport.authenticate(['client-basic', 'client-password'], { session: false }),
+    passport.authenticate(['basic', 'clientPassword'], { session: false }),
     async(ctx, next) => {
       ctx.state.user = ctx.passport.user;
       await next();

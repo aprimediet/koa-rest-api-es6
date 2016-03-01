@@ -1,16 +1,13 @@
 'use strict';
 
+import passport from 'koa-passport';
 import User from './user.model.js';
 import _debug from 'debug';
-import { token } from '../auth/oauth2';
 
 const debug = _debug('krs:user.route');
 
 export default (router) => {
-
-  router.post('/auth/token', token());
-
-  router.get('/users', async(ctx) => {
+  router.get('/users', passport.authenticate('jwt', { session: false }), async(ctx) => {
     const users = await User.find({});
     if (users) {
       ctx.body = users;

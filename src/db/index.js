@@ -6,15 +6,14 @@ import _debug from 'debug';
 import logger from '../utils/logger';
 import userFixtures from '../api/user/fixtures';
 import imageFixtures from '../api/image/fixtures';
-import clientFixture from '../api/client/fixtures';
+import clientFixture from '../api/auth/fixtures';
 
 const debug = _debug('krs:db');
-const log = logger(module);
 
 // if the Node process ends, close the Mongoose connection
 process.on('SIGINT', () => {
   mongoose.connection.close(() => {
-    log.debug('Mongoose disconnected through app termination');
+    debug('Mongoose disconnected through app termination');
     process.exit(0);
   });
 });
@@ -26,7 +25,7 @@ export function connectDb() {
 
     mongoose.connection
       .on('error', (err) => {
-        debug('Mongoose connection error: %s', err);
+        debug('Mongoose connection error: %s', err.message);
         reject(err);
       })
       .on('close', (err) => debug('Mongoose connection error %', err))

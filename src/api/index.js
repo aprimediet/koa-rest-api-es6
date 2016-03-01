@@ -1,7 +1,24 @@
 'use strict';
 
-export * from './user/user.route';
-export * from './auth/index';
+import compose from 'koa-compose';
+import Router from 'koa-router';
+import _debug from 'debug';
 
-export { default as userRoutes } from './user/user.route';
-export { default as clientPassword } from './client-password';
+import authRoutes from './auth/auth.route';
+import userRoutes from './user/user.route';
+import imageRoutes from './image/image.route';
+
+const debug = _debug('krs:api');
+
+export default function () {
+  const router = new Router();
+
+  authRoutes(router);
+  userRoutes(router);
+  imageRoutes(router);
+
+  return compose([
+    router.routes(),
+    router.allowedMethods()
+  ]);
+}
