@@ -80,13 +80,6 @@ const UserSchema = new mongoose.Schema({
   }
 });
 
-UserSchema.pre('validate', async function preValidate(next) {
-  if (this.isNew && !this.password) {
-    this.password = 'password';
-  }
-  next();
-});
-
 /**
  * Hook a pre save method to hash the password
  */
