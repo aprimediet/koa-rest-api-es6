@@ -16,9 +16,6 @@ const log = logger(module);
 
 const server = oauth2orize.createServer();
 
-server.serializeClient(client => client._id);
-server.deserializeClient(async(id) => await Client.findById(id));
-
 /**
  * Creates jwt token and refresh token
  *
@@ -43,6 +40,10 @@ async function generateTokens(user, client) {
 
   return [jwtToken, refreshToken.token, { expires_in: config.tokenExpiration }];
 }
+
+/**
+ * Exchange username & password for access token.
+ */
 server.exchange(oauth2orize.exchange.password(async(client, email, password) => {
   if (!client.trusted) return false;
 
@@ -59,6 +60,9 @@ server.exchange(oauth2orize.exchange.password(async(client, email, password) => 
   return false;
 }));
 
+/**
+ * Exchange refreshToken for access token.
+ */
 server.exchange(oauth2orize.exchange.refreshToken(async(client, refreshToken) => {
   if (!client.trusted) return false;
 
@@ -89,6 +93,13 @@ server.exchange(oauth2orize.exchange.refreshToken(async(client, refreshToken) =>
   return false;
 }));
 
+/**
+ *`token` middleware handles client requests to exchange authorization grants
+ * for jwt tokens.  Based on the grant type being exchanged, the above
+ * exchange middleware will be invoked to handle the request.  Clients must
+ * authenticate when making requests to this endpoint.
+ * @returns {Object} The token middleware
+ */
 export function token() {
   return compose([
     passport.authenticate(['basic', 'clientPassword'], { session: false }),

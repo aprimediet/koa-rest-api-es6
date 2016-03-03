@@ -37,8 +37,5 @@ Vagrant.configure("2") do |config|
 end
 
 # DEBUGGING
-# setup ssh proxy to VM
-# vagrant ssh -- -L 27017:127.0.0.1:27017 -L 6379:127.0.0.1:6379
 # vagrant ssh -- -L 27017:127.0.0.1:27017 -L 5859:127.0.0.1:5858
 # telnet 127.0.0.1 5858
-# node-debug --debug-port 5858 src/debug.js

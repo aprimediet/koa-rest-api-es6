@@ -1,7 +1,8 @@
 'use strict';
 
-import compose from 'koa-compose';
 import Router from 'koa-router';
+import passport from 'koa-passport';
+import compose from 'koa-compose';
 import _debug from 'debug';
 
 import authRoutes from './auth/auth.route';
@@ -14,6 +15,9 @@ export default function () {
   const router = new Router();
 
   authRoutes(router);
+  router.prefix('/api');
+  router.use(passport.authenticate('jwt', { session: false }));
+  // Routes below this line are only reached if JWT token is valid
   userRoutes(router);
   imageRoutes(router);
 
