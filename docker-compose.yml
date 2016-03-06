@@ -4,20 +4,13 @@ web:
   ports:
     - "3000:3000"
     - "5858:5858"
-  command: npm start
-  volumes:
-    - .:/home/app
+  command: npm run build
   environment:
     NODE_ENV: development
   links:
     - mongo
-    - redis
 mongo:
   image: mongo:latest
   command: mongod --smallfiles --quiet --logpath=/dev/null
   ports:
    - "27017:27017"
-redis:
-  image: redis:latest
-  ports:
-   - "6379:6379"

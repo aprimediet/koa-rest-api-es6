@@ -1,4 +1,4 @@
-FROM node:4.3.1
+FROM node:5.3.0
 
 RUN mkdir -p /home/app
 WORKDIR /home/app
@@ -13,4 +13,4 @@ ENV NODE_ENV development
 
 EXPOSE 3000
 
-CMD npm start
+CMD npm run prod

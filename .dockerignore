@@ -1,0 +1,24 @@
+node_modules
+test
+
+.idea/
+.settings
+logs/*.log
+
+.git
+.gitignore
+.eslintignore
+.eslintrc
+.npmignore
+.bash_history
+.cache
+
+# DevOps
+*.box
+.vagrant
+
+LICENSE
+README.md
+CHANGELOG.md
+docker-compose.yml
+Vagrantfile

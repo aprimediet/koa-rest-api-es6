@@ -2,23 +2,27 @@
 
 import winston from 'winston';
 import path from 'path';
+import fs from 'fs';
 
 winston.emitErrs = true;
 
-const getFilePath = (module) => {
-  return module.filename.split('/').slice(-2).join('/');
-};
+const getFilePath = m => m.filename.split('/').slice(-2).join('/');
+
+const dirLog = path.join(process.cwd(), 'logs');
+if (!fs.existsSync(dirLog)) {
+  fs.mkdirSync(dirLog);
+}
+const filePath = path.join(dirLog, 'all.log');
 
 export default function logger(module) {
   return new (winston.Logger)({
     transports: [
       new winston.transports.File({
         level: 'info',
-        filename: `${process.cwd()}/logs/all.log`,
+        filename: filePath,
         handleException: true,
         json: true,
         maxSize: 5242880, // 5mb
-        maxFiles: 2,
         colorize: false
       }),
       new winston.transports.Console({

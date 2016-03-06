@@ -1,4 +1,4 @@
 require('babel-register')({
   retainLines: true
 });
-require('./index');
+require('./src/app');

@@ -2,10 +2,13 @@
 
 import mongoose from 'mongoose';
 import validate from 'mongoose-validator';
-import bcrypt from 'bcrypt-as-promised';
 import _debug from 'debug';
+import bcrypt from '../../wrappers/bcrypt';
+import logger from '../../utils/logger';
 
-const debug = _debug('krs:user.model');
+const debug = _debug('krs:api:user:model');
+const log = logger(module);
+
 const SALT_WORK_FACTOR = 10;
 
 const UserSchema = new mongoose.Schema({
@@ -90,16 +93,20 @@ UserSchema.pre('save', async function preSave(next) {
   if (!user.isModified('password')) return next();
 
   try {
-    user.salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
-    user.password = await bcrypt.hash(user.password, user.salt);
+    user.salt = await bcrypt.genSaltAsync(SALT_WORK_FACTOR);
+    user.password = await bcrypt.hashAsync(user.password, user.salt);
     next();
   } catch (error) {
+    log.error(error);
     next(error);
   }
 });
 
+/**
+ * Methods
+ */
 UserSchema.methods.comparePassword = async function comparePassword(candidatePassword) {
-  return await bcrypt.compare(candidatePassword, this.password);
+  return await bcrypt.compareAsync(candidatePassword, this.password);
 };
 
 export default mongoose.model('User', UserSchema);

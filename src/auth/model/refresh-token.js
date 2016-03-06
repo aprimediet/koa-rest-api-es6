@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
-import uuid from 'node-uuid';
-import _debug from 'debug';
+import crypto from 'crypto';
 import config from '../config';
+import logger from '../../utils/logger';
 
-const debug = _debug('krs:auth.model.refresh-token');
+const log = logger(module);
 
 const RefreshTokenSchema = new mongoose.Schema({
   user: {
@@ -21,6 +21,9 @@ const RefreshTokenSchema = new mongoose.Schema({
     unique: true,
     required: true
   },
+  salt: {
+    type: String
+  },
   created_at: {
     type: Date,
     expires: config.refreshTokenExpiration
@@ -29,10 +32,22 @@ const RefreshTokenSchema = new mongoose.Schema({
 
 RefreshTokenSchema.pre('validate', async function preValidate(next) {
   if (this.isNew) {
-    this.token = uuid.v4();
-    this.created_at = Date.now();
+    try {
+      this.token = this.constructor.encryptToken(this.token);
+      this.created_at = Date.now();
+    } catch (error) {
+      log.error(error);
+      next(error);
+    }
   }
   next();
 });
+
+RefreshTokenSchema.statics = {
+  encryptToken: function encryptToken(refreshToken) {
+    return crypto.createHash('sha1').update(refreshToken).digest('hex');
+  }
+};
+
 
 export default mongoose.model('RefreshToken', RefreshTokenSchema);

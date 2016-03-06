@@ -3,10 +3,7 @@
 import mongoose from 'mongoose';
 import mongoConfig from './config';
 import _debug from 'debug';
-import logger from '../utils/logger';
-import userFixtures from '../api/user/fixtures';
-import imageFixtures from '../api/image/fixtures';
-import clientFixture from '../api/auth/fixtures';
+import { seedClients, seedUsers, seedImages } from './seed';
 
 const debug = _debug('krs:db');
 
@@ -37,7 +34,7 @@ export function connectDb() {
 }
 
 export async function seedDb() {
-  await userFixtures();
-  await imageFixtures();
-  await clientFixture();
+  await seedClients();
+  await seedUsers();
+  await seedImages();
 }

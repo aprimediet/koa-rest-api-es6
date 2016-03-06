@@ -11,9 +11,6 @@ Vagrant.configure("2") do |config|
   # MONGO
   #config.vm.network "forwarded_port", guest: 27017, host: 27017
 
-  # REDIS
-  #config.vm.network "forwarded_port", guest: 6379, host: 6379
-
   config.vm.box_check_update = false
   config.vm.synced_folder '.', '/vagrant', disabled: true
   config.vm.synced_folder '.', "/home/vagrant/koa-rest-api", create: true, group: "vagrant", owner: "vagrant",

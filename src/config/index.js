@@ -1,7 +1,6 @@
 'use strict';
 
 const config = Object.freeze({
-
   environment: process.env.NODE_ENV || 'development',
     // Server settings
   server: {

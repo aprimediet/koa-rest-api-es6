@@ -13,7 +13,7 @@ export default function () {
         ctx.throw(Boom.notFound('Endpoint not found.'));
       }
     } catch (err) {
-      if (err.status === 400) err = Boom.badRequest(err.message);
+      if (err.status === 400) err = Boom.badRequest(err.message); //eslint-disable-line
 
       if (err.isBoom) {
         ctx.body = err.output.payload;

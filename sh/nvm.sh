@@ -7,5 +7,5 @@ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.30.2/install.sh | b
 
 source $HOME/.nvm/nvm.sh
 
-nvm install 4.3.1
+nvm install 4.3.2
 nvm alias default node

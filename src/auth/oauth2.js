@@ -4,10 +4,10 @@ import passport from 'koa-passport';
 import jwt from 'jsonwebtoken';
 import oauth2orize from 'oauth2orize-koa';
 import compose from 'koa-compose';
-import Client from './model/client';
-import User from '../user/user.model';
+import uuid from 'node-uuid';
+import User from '../api/user/user.model.js';
 import RefreshToken from './model/refresh-token';
-import logger from '../../utils/logger';
+import logger from '../utils/logger';
 import _debug from 'debug';
 import config from './config';
 
@@ -33,18 +33,20 @@ async function generateTokens(user, client) {
 
   await RefreshToken.findOneAndRemove({ user: user._id });
 
-  const refreshToken = await RefreshToken.create({
+  const refreshTokenVal = uuid.v4();
+  await RefreshToken.create({
+    token: refreshTokenVal,
     user: user._id,
     client: client._id
   });
 
-  return [jwtToken, refreshToken.token, { expires_in: config.tokenExpiration }];
+  return [jwtToken, refreshTokenVal, { expires_in: config.tokenExpiration }];
 }
 
 /**
  * Exchange username & password for access token.
  */
-server.exchange(oauth2orize.exchange.password(async(client, email, password) => {
+server.exchange(oauth2orize.exchange.password(async(client, email, password, scope) => {
   if (!client.trusted) return false;
 
   try {
@@ -52,7 +54,7 @@ server.exchange(oauth2orize.exchange.password(async(client, email, password) => 
     if (!user) return false;
     const isMatch = await user.comparePassword(password);
     if (!isMatch) return false;
-    debug('Valid credentials');
+    debug('Valid credentials. current scope --> %s', scope);
     return await generateTokens(user, client);
   } catch (err) {
     log.error(err);
@@ -63,26 +65,23 @@ server.exchange(oauth2orize.exchange.password(async(client, email, password) => 
 /**
  * Exchange refreshToken for access token.
  */
-server.exchange(oauth2orize.exchange.refreshToken(async(client, refreshToken) => {
+server.exchange(oauth2orize.exchange.refreshToken(async(client, refreshToken, scope) => {
   if (!client.trusted) return false;
 
-  debug('Start refresh token exchange for client --> %s', client._id);
+  const refreshTokenHash = RefreshToken.encryptToken(refreshToken);
 
-  // TODO encrypt refresh token es:
-  // var accessTokenHash = crypto.createHash('sha1').update(newAccessToken).digest('hex')
-  // https://github.com/reneweb/oauth2orize_resource_owner_password_example/blob/master/oauth.js
   try {
-    const refToken = await RefreshToken.findOne({ token: refreshToken, client: client._id });
+    const refToken = await RefreshToken.findOne({ token: refreshTokenHash, client: client._id });
     if (!refToken) {
       debug('Refresh token not found');
       return false;
     }
 
-    debug('Refresh token found');
+    debug('Refresh token found. Current scope --> %s', scope);
     const user = await User.findById(refToken.user);
 
     if (!user) {
-      debug('User token found --> %s', refToken.user);
+      debug('User not found --> %s', refToken.user);
       return false;
     }
 
