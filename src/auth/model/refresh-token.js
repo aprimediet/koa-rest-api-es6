@@ -43,6 +43,9 @@ RefreshTokenSchema.pre('validate', async function preValidate(next) {
   next();
 });
 
+/**
+ * Static methods
+ */
 RefreshTokenSchema.statics = {
   encryptToken: function encryptToken(refreshToken) {
     return crypto.createHash('sha1').update(refreshToken).digest('hex');

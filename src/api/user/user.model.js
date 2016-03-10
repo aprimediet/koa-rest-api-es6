@@ -11,6 +11,9 @@ const log = logger(module);
 
 const SALT_WORK_FACTOR = 10;
 
+/**
+ * User Schema
+ */
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -105,8 +108,13 @@ UserSchema.pre('save', async function preSave(next) {
 /**
  * Methods
  */
-UserSchema.methods.comparePassword = async function comparePassword(candidatePassword) {
-  return await bcrypt.compareAsync(candidatePassword, this.password);
+UserSchema.methods = {
+  comparePassword: async function comparePassword(candidatePassword) {
+    return await bcrypt.compareAsync(candidatePassword, this.password);
+  }
 };
 
+/**
+ * @typedef User
+ */
 export default mongoose.model('User', UserSchema);

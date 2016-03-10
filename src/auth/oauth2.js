@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import oauth2orize from 'oauth2orize-koa';
 import compose from 'koa-compose';
 import uuid from 'node-uuid';
-import User from '../api/user/user.model.js';
+import User from '../api/user/user.model';
 import RefreshToken from './model/refresh-token';
 import logger from '../utils/logger';
 import _debug from 'debug';

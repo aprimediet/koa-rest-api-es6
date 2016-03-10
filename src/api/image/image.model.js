@@ -3,7 +3,6 @@
 import mongoose from 'mongoose';
 import User from '../user/user.model';
 
-
 /**
  * Image Schema
  */
@@ -30,4 +29,7 @@ const ImageSchema = new mongoose.Schema({
   }
 });
 
+/**
+ * @typedef Image
+ */
 export default mongoose.model('Image', ImageSchema);

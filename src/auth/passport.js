@@ -1,7 +1,7 @@
 'use strict';
 
 import compose from 'koa-compose';
-import User from '../api/user/user.model.js';
+import User from '../api/user/user.model';
 import * as strategies from './strategies';
 
 export default (passport) => {
