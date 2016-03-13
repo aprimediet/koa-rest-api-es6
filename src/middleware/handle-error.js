@@ -14,19 +14,20 @@ export default function () {
       }
     } catch (err) {
       if (err.status === 400) err = Boom.badRequest(err.message); //eslint-disable-line
-
       if (err.isBoom) {
         ctx.body = err.output.payload;
         ctx.status = err.output.statusCode;
         return;
       }
-      log.error(err);
       ctx.body = {
         message: err.message,
         stack: err.stack,
         options: err
       };
+
       ctx.status = err.status || 500;
+      log.error(err);
+      ctx.app.emit('error', err, ctx);
     }
   };
 }

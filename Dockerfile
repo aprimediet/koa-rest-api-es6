@@ -13,4 +13,4 @@ ENV NODE_ENV development
 
 EXPOSE 3000
 
-CMD npm run prod
+CMD npm run build

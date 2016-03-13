@@ -2,11 +2,11 @@
 
 import mongoose from 'mongoose';
 import validate from 'mongoose-validator';
-import _debug from 'debug';
 import bcrypt from '../../wrappers/bcrypt';
 import logger from '../../utils/logger';
+// import _debug from 'debug';
+// const debug = _debug('krs:api:user:model');
 
-const debug = _debug('krs:api:user:model');
 const log = logger(module);
 
 const SALT_WORK_FACTOR = 10;
@@ -21,13 +21,13 @@ const UserSchema = new mongoose.Schema({
     required: true,
     minlength: 3
   },
-  username: {
+  lastName: {
     type: String,
     trim: true,
     required: true,
     minlength: 3
   },
-  email: {
+  username: {
     type: String,
     trim: true,
     unique: true,
@@ -35,8 +35,13 @@ const UserSchema = new mongoose.Schema({
     lowercase: true,
     validate: validate({
       validator: 'isEmail',
-      message: 'Please fill in your email'
+      message: 'Please fill in your username'
     })
+  },
+  active: {
+    type: Boolean,
+    required: true,
+    default: false
   },
   phone: {
     type: String

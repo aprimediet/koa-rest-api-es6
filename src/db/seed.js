@@ -2,7 +2,7 @@
 
 import _debug from 'debug';
 
-import Client from '../auth/model/client';
+import Client from '../api/auth/model/client';
 import clientFixtures from '../../fixtures/client.json';
 import User from '../api/user/user.model';
 import userFixtures from '../../fixtures/user.json';
@@ -37,4 +37,3 @@ export async function seedImages() {
   await Image.create(imageFixtures);
   debug('--> images created');
 }
-

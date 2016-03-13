@@ -1,10 +1,11 @@
 [
   {
     "_id": "5692820f7822e79322d671e1",
-    "name": "Damien Dell'Amico",
-    "username": "Damien81",
-    "email": "damien.dellamico@gmail.com",
+    "name": "Damien",
+    "lastName": "Dell'Amico",
+    "username": "damien.dellamico@gmail.com",
     "password": "test",
+    "active": true,
     "roles": [
       "user",
       "admin"
@@ -19,10 +20,11 @@
   },
   {
     "_id": "56d576d19f73e3c32309636c",
-    "name": "Ervin Howell",
-    "username": "Antonette",
-    "email": "Shanna@melissa.tv",
+    "name": "Ervin",
+    "lastName": "Howell",
+    "username": "shanna@melissa.tv",
     "password": "test",
+    "active": true,
     "phone": "010-692-6593 x09125",
     "website": "anastasia.net",
     "company": {
@@ -32,10 +34,11 @@
     }
   },
   {
-    "name": "Clementine Bauch",
-    "username": "Samantha",
-    "email": "Nathan@yesenia.net",
+    "name": "Clementine",
+    "lastName": "Bauch",
+    "username": "Nathan@yesenia.net",
     "password": "test",
+    "active": true,
     "phone": "1-463-123-4447",
     "website": "ramiro.info",
     "company": {

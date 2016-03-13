@@ -8,10 +8,9 @@ import pkg from '../package.json';
 import logger from 'koa-logger';
 import middleware from './middleware';
 import mount from 'koa-mount';
-import routing from './api';
+import api from './api';
 import config from './config';
 import _log from './utils/logger';
-import auth from './auth';
 import { connectDb, seedDb } from './db';
 
 sourceMapSupport.install();
@@ -37,8 +36,7 @@ if (config.environment === 'development') {
   app.use(logger());
 }
 app.use(middleware());
-app.use(mount(auth));
-app.use(routing());
+app.use(mount(api));
 
 (async() => {
   try {

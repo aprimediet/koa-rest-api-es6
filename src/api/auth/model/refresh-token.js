@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import crypto from 'crypto';
 import config from '../config';
-import logger from '../../utils/logger';
+import logger from '../../../utils/logger';
 
 const log = logger(module);
 

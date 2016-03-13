@@ -5,9 +5,9 @@ import jwt from 'jsonwebtoken';
 import oauth2orize from 'oauth2orize-koa';
 import compose from 'koa-compose';
 import uuid from 'node-uuid';
-import User from '../api/user/user.model';
+import User from '../user/user.model';
 import RefreshToken from './model/refresh-token';
-import logger from '../utils/logger';
+import logger from '../../utils/logger';
 import _debug from 'debug';
 import config from './config';
 
@@ -21,14 +21,12 @@ const server = oauth2orize.createServer();
  *
  * @param {Object} user - The user object
  * @param {String} user._id - The user id
- * @param {String} user.email - The user email
+ * @param {String} user.username - The username (email)
  * @param {Object} client - The client object
  * @param {String} client._id - The client id
  */
 async function generateTokens(user, client) {
-  if (!user || !client) return false;
-
-  const jwtToken = jwt.sign({ id: user._id, email: user.email },
+  const jwtToken = jwt.sign({ id: user._id, username: user.username },
     config.secret, { expiresIn: parseInt(config.tokenExpiration, 10) });
 
   await RefreshToken.findOneAndRemove({ user: user._id });
@@ -46,12 +44,12 @@ async function generateTokens(user, client) {
 /**
  * Exchange username & password for access token.
  */
-server.exchange(oauth2orize.exchange.password(async(client, email, password, scope) => {
+server.exchange(oauth2orize.exchange.password(async(client, username, password, scope) => {
   if (!client.trusted) return false;
 
   try {
-    const user = await User.findOne({ email: email.toLowerCase() });
-    if (!user) return false;
+    const user = await User.findOne({ username: username.toLowerCase() });
+    if (!user || !user.active) return false;
     const isMatch = await user.comparePassword(password);
     if (!isMatch) return false;
     debug('Valid credentials. current scope --> %s', scope);
@@ -80,8 +78,8 @@ server.exchange(oauth2orize.exchange.refreshToken(async(client, refreshToken, sc
     debug('Refresh token found. Current scope --> %s', scope);
     const user = await User.findById(refToken.user);
 
-    if (!user) {
-      debug('User not found --> %s', refToken.user);
+    if (!user || !user.active) {
+      debug('User not found or not active--> %j', refToken.user);
       return false;
     }
 
@@ -109,4 +107,8 @@ export function token() {
     server.token(),
     server.errorHandler()
   ]);
+}
+
+export function authorize() {
+  return passport.authenticate('jwt', { session: false });
 }
