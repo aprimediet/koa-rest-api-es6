@@ -5,4 +5,4 @@ apt-get -qq update
 apt-get install -y make g++ git curl vim
 apt-get install -y bash-completion wget python-software-properties python build-essential
 # Install tools
-apt-get install httpie
+apt-get install -y httpie
