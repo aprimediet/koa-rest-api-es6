@@ -27,7 +27,7 @@ export default (router) => {
    * @param {Object} ctx The context object
    * @returns {Image} the image corresponding to the specified id
    */
-  router.get('/images/:id', authorize(), objectIdConstraint(),
+  router.get('/images/:id', objectIdConstraint(),
     async(ctx) => ctx.body = await Image.findById(ctx.params.id));
 
   /**
@@ -36,6 +36,6 @@ export default (router) => {
    * @param {Object} ctx The context object
    * @returns {Image} the image corresponding to the specified id
    */
-  router.get('/users/:id/images', authorize(), objectIdConstraint(),
+  router.get('/users/:id/images', objectIdConstraint(),
     async(ctx) => ctx.body = await Image.find({ user: ctx.params.id }));
 };
