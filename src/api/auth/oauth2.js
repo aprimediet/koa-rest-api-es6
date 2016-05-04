@@ -26,8 +26,10 @@ const server = oauth2orize.createServer();
  * @param {String} client._id - The client id
  */
 async function generateTokens(user, client) {
-  const jwtToken = jwt.sign({ id: user._id, username: user.username },
-    config.secret, { expiresIn: parseInt(config.tokenExpiration, 10) });
+  const jwtToken = jwt.sign({
+    id: user._id, username: user.username, iss: 'http://jwt-auth-srv.net',
+    aud: '099153c2625149bc8ecb3e85e03f0022'
+  }, config.secret, { expiresIn: parseInt(config.tokenExpiration, 10) });
 
   await RefreshToken.findOneAndRemove({ user: user._id });
 
