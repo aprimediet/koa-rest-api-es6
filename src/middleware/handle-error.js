@@ -1,32 +1,22 @@
+/**
+ * @author    Damien Dell'Amico <damien.dellamico@gmail.com>
+ * @copyright Copyright (c) 2016
+ * @license   GPL-3.0
+ */
+
 'use strict';
 
-import Boom from 'boom';
 import _log from '../utils/logger';
-
 const log = _log(module);
 
 export default function () {
   return async(ctx, next) => {
     try {
       await next();
-      if (ctx.status === 404 && !ctx.body) {
-        ctx.throw(Boom.notFound('Endpoint not found.'));
-      }
     } catch (err) {
-      if (err.status === 400) err = Boom.badRequest(err.message); //eslint-disable-line
-      if (err.isBoom) {
-        ctx.body = err.output.payload;
-        ctx.status = err.output.statusCode;
-        return;
-      }
-      ctx.body = {
-        message: err.message,
-        stack: err.stack,
-        options: err
-      };
-
-      ctx.status = err.status || 500;
       log.error(err);
+      ctx.status = err.status || 500;
+      ctx.body = err.message;
       ctx.app.emit('error', err, ctx);
     }
   };
