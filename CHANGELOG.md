@@ -6,16 +6,11 @@ All notable changes to this project will be documented in this file. See [standa
 # 0.1.0 (2016-09-10)
 
 
-### Bug Fixes
-
-* **app:** full refactoring ([c38dbc4](https://github.com/ddellamico/koa-rest-api-es6/commit/c38dbc4))
-* **eslint:** fix eslint errors ([4bc79fe](https://github.com/ddellamico/koa-rest-api-es6/commit/4bc79fe))
-
-
 ### Features
 
+* **app:** full refactoring ([c38dbc4](https://github.com/ddellamico/koa-rest-api-es6/commit/c38dbc4))
 * **app:** add commitizen ([db5f9d8](https://github.com/ddellamico/koa-rest-api-es6/commit/db5f9d8))
 
+### Bug Fixes
 
-
-# Change Log
+* **eslint:** fix eslint errors ([4bc79fe](https://github.com/ddellamico/koa-rest-api-es6/commit/4bc79fe))
