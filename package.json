@@ -1,6 +1,6 @@
 {
   "name": "koa-rest-api-es6",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A simple Koa 2 rest api that implement oauth2 Resource Owner Password Flow with JSON Web Token and Refresh Token.",
   "author": {
     "name": "Damien Dell'Amico",
