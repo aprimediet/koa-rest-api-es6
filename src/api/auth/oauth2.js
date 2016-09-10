@@ -1,18 +1,26 @@
+/**
+ * @author    Damien Dell'Amico <damien.dellamico@gmail.com>
+ * @copyright Copyright (c) 2016
+ * @license   GPL-3.0
+ */
+
 'use strict';
 
 import passport from 'koa-passport';
+import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import oauth2orize from 'oauth2orize-koa';
 import compose from 'koa-compose';
 import uuid from 'node-uuid';
-import User from '../user/user.model';
-import RefreshToken from './model/refresh-token';
 import logger from '../../utils/logger';
 import _debug from 'debug';
 import config from './config';
 
-const debug = _debug('krs:auth.oauth2');
+const debug = _debug('koa-rest-api:auth.oauth2');
 const log = logger(module);
+
+const User = mongoose.model('User');
+const RefreshToken = mongoose.model('RefreshToken');
 
 const server = oauth2orize.createServer();
 
@@ -27,8 +35,9 @@ const server = oauth2orize.createServer();
  */
 async function generateTokens(user, client) {
   const jwtToken = jwt.sign({
-    id: user._id, username: user.username, iss: 'http://jwt-auth-srv.net',
-    aud: '099153c2625149bc8ecb3e85e03f0022'
+    user,
+    iss: 'https://ion-conf-api.damiendev.com', // iss: "https://YOUR_NAMESPACE",
+    aud: client._id // aud: "YOUR_CLIENT_ID"
   }, config.secret, { expiresIn: parseInt(config.tokenExpiration, 10) });
 
   await RefreshToken.findOneAndRemove({ user: user._id });
@@ -48,7 +57,6 @@ async function generateTokens(user, client) {
  */
 server.exchange(oauth2orize.exchange.password(async(client, username, password, scope) => {
   if (!client.trusted) return false;
-
   try {
     const user = await User.findOne({ username: username.toLowerCase() });
     if (!user || !user.active) return false;

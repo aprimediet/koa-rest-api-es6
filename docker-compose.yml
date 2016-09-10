@@ -1,16 +1,17 @@
-web:
-  build: .
-  working_dir: /home/app
-  ports:
-    - "3000:3000"
-    - "5858:5858"
-  command: npm run build
-  environment:
-    NODE_ENV: development
-  links:
-    - mongo
-mongo:
-  image: mongo:latest
-  command: mongod --smallfiles --quiet --logpath=/dev/null
-  ports:
-   - "27017:27017"
+version: '2'
+services:
+  api:
+    build: .
+    working_dir: /home/app
+    ports:
+      - "3000:3000"
+    command: npm run build
+    env_file: .env.prod.example
+    links:
+      - mongo_container
+  mongo_container:
+    image: mongo:latest
+    command: mongod --smallfiles --quiet --logpath=/dev/null
+    ports:
+     - "27017:27017"
+

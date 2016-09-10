@@ -1,8 +1,10 @@
 'use strict';
 
 import compose from 'koa-compose';
-import User from '../user/user.model';
+import mongoose from 'mongoose';
 import * as strategies from './strategies';
+
+const User = mongoose.model('User');
 
 export default (passport) => {
   Object.keys(strategies).forEach(name => {
@@ -19,7 +21,6 @@ export default (passport) => {
   });
 
   return compose([
-    passport.initialize(),
-    passport.session()
+    passport.initialize()
   ]);
 };

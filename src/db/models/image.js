@@ -1,7 +1,12 @@
+/**
+ * @author    Damien Dell'Amico <damien.dellamico@gmail.com>
+ * @copyright Copyright (c) 2016
+ * @license   GPL-3.0
+ */
+
 'use strict';
 
 import mongoose from 'mongoose';
-import User from '../user/user.model';
 
 /**
  * Image Schema
@@ -15,10 +20,7 @@ const ImageSchema = new mongoose.Schema({
     trim: true,
     required: true
   },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: User
-  },
+  user: { type: mongoose.Schema.ObjectId, ref: 'User' },
   description: {
     type: String
   },
@@ -32,4 +34,4 @@ const ImageSchema = new mongoose.Schema({
 /**
  * @typedef Image
  */
-export default mongoose.model('Image', ImageSchema);
+mongoose.model('Image', ImageSchema);

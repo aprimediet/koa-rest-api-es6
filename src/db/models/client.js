@@ -1,3 +1,9 @@
+/**
+ * @author    Damien Dell'Amico <damien.dellamico@gmail.com>
+ * @copyright Copyright (c) 2016
+ * @license   GPL-3.0
+ */
+
 'use strict';
 
 import mongoose from 'mongoose';
@@ -29,4 +35,4 @@ const ClientSchema = new mongoose.Schema({
   }
 });
 
-export default mongoose.model('Client', ClientSchema);
+mongoose.model('Client', ClientSchema);

@@ -1,21 +1,24 @@
+/**
+ * @author    Damien Dell'Amico <damien.dellamico@gmail.com>
+ * @copyright Copyright (c) 2016
+ * @license   GPL-3.0
+ */
+
 'use strict';
 
 import mongoose from 'mongoose';
 import validate from 'mongoose-validator';
 import bcrypt from '../../wrappers/bcrypt';
 import logger from '../../utils/logger';
-// import _debug from 'debug';
-// const debug = _debug('krs:api:user:model');
 
 const log = logger(module);
-
 const SALT_WORK_FACTOR = 10;
 
 /**
  * User Schema
  */
 const UserSchema = new mongoose.Schema({
-  name: {
+  firstName: {
     type: String,
     trim: true,
     required: true,
@@ -41,17 +44,7 @@ const UserSchema = new mongoose.Schema({
   active: {
     type: Boolean,
     required: true,
-    default: false
-  },
-  phone: {
-    type: String
-  },
-  website: {
-    type: String,
-    validate: validate({
-      validator: 'isURL',
-      message: 'Invalid website'
-    })
+    default: true
   },
   password: {
     type: String,
@@ -72,13 +65,9 @@ const UserSchema = new mongoose.Schema({
     }],
     default: ['user'],
     required: 'Please provide at least one role'
-  },
-  company: {
-    name: String,
-    catchPhrase: String,
-    bs: String
   }
 }, {
+  versionKey: false,
   timestamps: {
     createdAt: 'created_at',
     updatedAt: 'updated_at'
@@ -87,6 +76,8 @@ const UserSchema = new mongoose.Schema({
     transform(doc, ret) {
       delete ret.password;
       delete ret.salt;
+      delete ret.active;
+      delete ret.provider;
     }
   }
 });
@@ -98,7 +89,9 @@ UserSchema.pre('save', async function preSave(next) {
   const user = this;
 
   // only hash the password if it has been modified (or is new)
-  if (!user.isModified('password')) return next();
+  if (!user.isModified('password')) {
+    next();
+  }
 
   try {
     user.salt = await bcrypt.genSaltAsync(SALT_WORK_FACTOR);
@@ -122,4 +115,4 @@ UserSchema.methods = {
 /**
  * @typedef User
  */
-export default mongoose.model('User', UserSchema);
+mongoose.model('User', UserSchema);

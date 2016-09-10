@@ -9,7 +9,7 @@
 import mongoose from 'mongoose';
 import _debug from 'debug';
 
-const debug = _debug('ion-conf-app:route-constraints:objectId');
+const debug = _debug('koa-rest-api:route-constraints:objectId');
 
 /**
  * A check to see if id is a valid ObjectId or not

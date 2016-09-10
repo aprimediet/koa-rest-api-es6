@@ -18,18 +18,14 @@
     "babel": "./node_modules/.bin/babel src -d dist --source-maps --copy-files",
     "build": "npm run clean && npm run docs && npm run babel && node ./dist",
     "dev": "./node_modules/.bin/nodemon --debug -L babel.js --ext 'js json'",
-    "debug": "DEBUG=ion-conf-app:* && npm run dev",
+    "debug": "DEBUG=koa-rest-api:* && npm run dev",
     "test": "mocha test --timeout 6000",
     "lint": "./node_modules/.bin/eslint --cache .",
     "outdated": "npm outdated --depth 0",
-    "docker-build": "docker build --no-cache=true -t ddellamico/koa-rest-api-es6 .",
-    "docker-tag": "docker tag ddellamico/ion-conf-api:latest ddellamico/koa-rest-api-es6:0.0.1",
-    "docker-push": "docker push ddellamico/koa-rest-api-es6:0.0.1"
+    "docker-build": "docker build --no-cache=true -t ddellamico/ion-conf-api .",
+    "docker-tag": "docker tag ddellamico/ion-conf-api:latest ddellamico/ion-conf-api:0.0.1",
+    "docker-push": "docker push ddellamico/ion-conf-api:0.0.1"
   },
-  "pre-commit": [
-    "lint",
-    "outdated"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/ddellamico/koa-rest-api-es6"
@@ -126,7 +122,7 @@
     }
   },
   "apidoc": {
-    "title": "ionic-conference-api",
+    "title": "koa-rest-api-es6",
     "url": "https://ion-conf-api.damiendev.com/api"
   },
   "license": "MIT"

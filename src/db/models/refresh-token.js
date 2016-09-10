@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import crypto from 'crypto';
-import config from '../config';
-import logger from '../../../utils/logger';
+import config from '../../config';
+import logger from '../../utils/logger';
 
 const log = logger(module);
 
@@ -53,4 +53,4 @@ RefreshTokenSchema.statics = {
 };
 
 
-export default mongoose.model('RefreshToken', RefreshTokenSchema);
+mongoose.model('RefreshToken', RefreshTokenSchema);

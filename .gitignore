@@ -44,6 +44,9 @@ dist
 .bash_history
 .cache
 .config
-.ionic
 .node-gyp
 .npm
+npm-shrinkwrap.json
+
+# apidoc documentation
+docs/

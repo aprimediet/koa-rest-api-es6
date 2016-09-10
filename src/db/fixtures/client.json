@@ -1,0 +1,6 @@
+{
+  "name": "koa-rest-api",
+  "id": "koa-rest-api",
+  "secret": "secret",
+  "trusted": true
+}
