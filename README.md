@@ -1,6 +1,7 @@
 #KOA 2 REST API Boilerplate
 
 [![Build Status](https://travis-ci.org/ddellamico/koa-rest-api-es6.svg?branch=master)](https://travis-ci.org/ddellamico/koa-rest-api-es6) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat-square)](http://commitizen.github.io/cz-cli/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT) [![Dependency Status](https://david-dm.org/ddellamico/koa-rest-api-es6.svg)](https://david-dm.org/ddellamico/koa-rest-api-es6) [![devDependency Status](https://david-dm.org/ddellamico/koa-rest-api-es6/dev-status.svg)](https://david-dm.org/ddellamico/koa-rest-api-es6#info=devDependencies)
 
 A simple Koa 2 rest api that implement oauth2 Resource Owner Password Flow with JSON Web Token and Refresh Token.
 
