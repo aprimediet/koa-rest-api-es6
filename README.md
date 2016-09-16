@@ -50,12 +50,12 @@ For the following requests, I use httpie. Check out here for more info : <https:
 First, set the following variables :
 
 ```bash
-BASIC_AUTH="Basic S3JhQXBwOnNlY3JldA=="
+BASIC_AUTH="Basic a29hLXJlc3QtYXBpOnNlY3JldA=="
 BASE_URL="http://localhost:3000/api"
 ```
 
 The BASIC_AUTH variable is assigned with the client credentials ( base64 encoded )
-In this case I'm just using the credentials of a client seeded at application startup : KraApp:secret
+In this case I'm just using the credentials of a client seeded at application startup : "koa-rest-api:secret"
 
 Exchange username/password for access token :
 
