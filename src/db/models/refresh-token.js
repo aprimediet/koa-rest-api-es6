@@ -1,3 +1,11 @@
+/**
+ * @author    Damien Dell'Amico <damien.dellamico@gmail.com>
+ * @copyright Copyright (c) 2016
+ * @license   GPL-3.0
+ */
+
+'use strict';
+
 import mongoose from 'mongoose';
 import crypto from 'crypto';
 import config from '../../config';
@@ -30,7 +38,7 @@ const RefreshTokenSchema = new mongoose.Schema({
   }
 });
 
-RefreshTokenSchema.pre('validate', async function preValidate(next) {
+RefreshTokenSchema.pre('validate', function preValidate(next) {
   if (this.isNew) {
     try {
       this.token = this.constructor.encryptToken(this.token);

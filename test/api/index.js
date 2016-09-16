@@ -9,9 +9,11 @@
 import supertest from 'supertest-as-promised';
 import chai from 'chai';
 import importDir from 'import-dir';
+import _debug from 'debug';
+
 import config from '../../src/config';
 import { connectDb, loadFixtures } from '../../src/db';
-import _debug from 'debug';
+
 const debug = _debug('koa-rest-api:db');
 
 chai.should();
@@ -36,7 +38,9 @@ describe('Auth', () => {
     } catch (ex) {
       debug('Unable to connect to database', ex);
     }
+
     const app = require('../../src/server').app;
+
     request = supertest.agent(app.listen());
   });
 

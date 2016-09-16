@@ -1,9 +1,10 @@
 'use strict';
 
-import config from '../config';
 import mongoose from 'mongoose';
 import passportJwt from 'passport-jwt';
 import _debug from 'debug';
+
+import config from '../config';
 
 const debug = _debug('koa-rest-api:api.auth.jwt');
 const User = mongoose.model('User');
