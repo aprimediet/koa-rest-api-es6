@@ -6,7 +6,7 @@
 
 'use strict';
 
-import supertest from 'supertest-as-promised';
+import supertest from 'supertest';
 import chai from 'chai';
 import importDir from 'import-dir';
 import _debug from 'debug';
@@ -31,7 +31,7 @@ const authUser = {
 };
 
 describe('Auth', () => {
-  before(async() => {
+  before(async () => {
     const dbURI = `mongodb://${config.db.host}:${config.db.port}/${config.db.nameTest}`;
     try {
       await connectDb(dbURI);
@@ -44,11 +44,11 @@ describe('Auth', () => {
     request = supertest.agent(app.listen());
   });
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     await loadFixtures(true);
   });
 
-  it('should throw 403 if credentials are incorrect', async() => {
+  it('should throw 403 if credentials are incorrect', async () => {
     await request.post('/api/auth/token')
       .set('Accept', 'application/json')
       .send({
@@ -61,7 +61,7 @@ describe('Auth', () => {
       .expect(403);
   });
 
-  it('should auth user', async() => {
+  it('should auth user', async () => {
     const req = await request.post('/api/auth/token')
       .send({
         username: authUser.username,
@@ -73,15 +73,15 @@ describe('Auth', () => {
       .expect(200)
       .expect('Content-Type', /json/);
 
-    const body = req.res.body;
+    const { body } = req;
     body.should.have.property('access_token');
     body.should.have.property('refresh_token');
 
     context.token = body.access_token;
   });
 
-  it('should exchange refreshToken for access token.', async() => {
-    const reqToken = await request.post('/api/auth/token')
+  it('should exchange refreshToken for access token.', async () => {
+    const req = await request.post('/api/auth/token')
       .send({
         username: authUser.username,
         password: authUser.password,
@@ -92,7 +92,7 @@ describe('Auth', () => {
       .expect(200)
       .expect('Content-Type', /json/);
 
-    const { refresh_token } = reqToken.res.body;
+    const { refresh_token } = req.body;
 
     const reqRefresh = await request.post('/api/auth/token')
       .send({
@@ -104,12 +104,12 @@ describe('Auth', () => {
       .expect(200)
       .expect('Content-Type', /json/);
 
-    const body = reqRefresh.res.body;
+    const body = reqRefresh.body;
     body.should.have.property('access_token');
     body.should.have.property('refresh_token');
   });
 
-  after(async() => {
+  after(async () => {
     const routes = importDir('./routes');
     Object.keys(routes).forEach(name => routes[name](request, context));
   });

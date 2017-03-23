@@ -8,7 +8,7 @@
 
 export default function (request, context) {
   describe('Images', () => {
-    it('should not fetch images if token is invalid', async() => {
+    it('should not fetch images if token is invalid', async () => {
       await request.get('/api/images')
         .set({
           Accept: 'application/json',
@@ -17,7 +17,7 @@ export default function (request, context) {
         .expect(401);
     });
 
-    it('should fetch all images', async() => {
+    it('should fetch all images', async () => {
       const { token } = context;
       const req = await request.get('/api/images')
         .set({
@@ -27,7 +27,7 @@ export default function (request, context) {
         .expect(200)
         .expect('Content-Type', /json/);
 
-      const images = req.res.body;
+      const images = req.body;
       images.should.to.be.instanceOf(Array);
       images[0].should.have.property('_id');
       images[0].should.have.property('user');

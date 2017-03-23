@@ -15,7 +15,7 @@ const user = {
 
 export default function (request, context) {
   describe('Users', () => {
-    it('should not fetch users if token is invalid', async() => {
+    it('should not fetch users if token is invalid', async () => {
       await request.get('/api/users')
         .set({
           Accept: 'application/json',
@@ -24,7 +24,7 @@ export default function (request, context) {
         .expect(401);
     });
 
-    it('should fetch all users', async() => {
+    it('should fetch all users', async () => {
       const { token } = context;
       const req = await request.get('/api/users')
         .set({
@@ -34,7 +34,7 @@ export default function (request, context) {
         .expect(200)
         .expect('Content-Type', /json/);
 
-      const users = req.res.body;
+      const users = req.body;
       users.should.to.be.instanceOf(Array);
       users[0].should.have.property('_id');
       users[0].should.have.property('username');
@@ -42,7 +42,7 @@ export default function (request, context) {
       users[0].should.have.property('created_at');
     });
 
-    it('should create user', async() => {
+    it('should create user', async () => {
       const res = await request.post('/api/users')
         .send(user)
         .expect(201)
