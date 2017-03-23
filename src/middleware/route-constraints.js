@@ -16,7 +16,7 @@ const debug = _debug('koa-rest-api:route-constraints:objectId');
  * @returns {Function}
  */
 export function objectIdConstraint() {
-  return async(ctx, next) => {
+  return async (ctx, next) => {
     if (!mongoose.Types.ObjectId.isValid(ctx.params.id)) {
       debug('Invalid ObjectId ==> %s', ctx.params.id);
       ctx.throw('Endpoint not found.', 404);

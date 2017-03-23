@@ -44,7 +44,7 @@ const router = new Router({
  *
  * @apiUse TokenError
  */
-router.get('/', authorize(), async(ctx) => ctx.body = await User.find({}));
+router.get('/', authorize(), async (ctx) => ctx.body = await User.find({}));
 
 /**
  * @api {post} /users Create a new user
@@ -66,7 +66,7 @@ router.get('/', authorize(), async(ctx) => ctx.body = await User.find({}));
  * }' "https://ion-conf-api.damiendev.com/api/users"
  *
  */
-router.post('/', async(ctx) => {
+router.post('/', async (ctx) => {
   const { firstName, lastName, username, password } = ctx.request.body;
 
   ctx.body = await User.create({
@@ -104,7 +104,7 @@ router.post('/', async(ctx) => {
  * @apiUse TokenError
  */
 router.get('/:id', authorize(), objectIdConstraint(),
-  async(ctx) => ctx.body = await User.findById(ctx.params.id));
+  async (ctx) => ctx.body = await User.findById(ctx.params.id));
 
 /**
  * @api {put} /users/:id Update existing user by id
@@ -138,7 +138,7 @@ router.get('/:id', authorize(), objectIdConstraint(),
  *
  * @apiUse TokenError
  */
-router.put('/:id', authorize(), objectIdConstraint(), async(ctx) => {
+router.put('/:id', authorize(), objectIdConstraint(), async (ctx) => {
   const { firstName, lastName, username } = ctx.request.body;
 
   const user = await User.findByIdAndUpdate(ctx.params.id, {
@@ -169,7 +169,7 @@ router.put('/:id', authorize(), objectIdConstraint(), async(ctx) => {
  *
  * @apiUse TokenError
  */
-router.delete('/:id', authorize(), objectIdConstraint(), async(ctx) => {
+router.delete('/:id', authorize(), objectIdConstraint(), async (ctx) => {
   const user = await User.findByIdAndRemove(ctx.params.id);
   if (user) ctx.status = 204;
 });
@@ -200,6 +200,6 @@ router.delete('/:id', authorize(), objectIdConstraint(), async(ctx) => {
  * @apiUse TokenError
  */
 router.get('/:id/images', authorize(), objectIdConstraint(),
-  async(ctx) => ctx.body = await Image.find({ user: ctx.params.id }));
+  async (ctx) => ctx.body = await Image.find({ user: ctx.params.id }));
 
 export default router;

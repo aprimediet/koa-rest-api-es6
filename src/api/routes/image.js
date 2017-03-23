@@ -38,7 +38,7 @@ router.use(authorize());
  *
  * @apiUse TokenError
  */
-router.get('/', async(ctx) => ctx.body = await Image.find({}));
+router.get('/', async (ctx) => ctx.body = await Image.find({}));
 
 /**
  * @api {get} /images/:id Get image
@@ -64,6 +64,6 @@ router.get('/', async(ctx) => ctx.body = await Image.find({}));
  * @apiUse TokenError
  */
 router.get('/:id', objectIdConstraint(),
-  async(ctx) => ctx.body = await Image.findById(ctx.params.id));
+  async (ctx) => ctx.body = await Image.findById(ctx.params.id));
 
 export default router;

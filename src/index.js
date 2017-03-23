@@ -22,7 +22,7 @@ const banner = `
 *
 *********************************************************************************************`;
 log.debug(banner);
-(async() => {
+(async () => {
   try {
     const dbURI = `mongodb://${config.db.host}:${config.db.port}/${config.db.name}`;
     const info = await connectDb(dbURI);

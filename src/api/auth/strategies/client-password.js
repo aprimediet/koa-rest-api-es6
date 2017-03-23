@@ -11,7 +11,7 @@ import mongoose from 'mongoose';
 
 const Client = mongoose.model('Client');
 
-export default new Strategy(async(id, secret, done) => {
+export default new Strategy(async (id, secret, done) => {
   try {
     const client = await Client.findOne({ id });
     if (!client || secret !== client.secret) return done(null, false);

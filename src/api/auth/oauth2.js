@@ -11,7 +11,7 @@ import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import oauth2orize from 'oauth2orize-koa';
 import compose from 'koa-compose';
-import uuid from 'node-uuid';
+import uuid from 'uuid';
 
 import _debug from 'debug';
 import logger from '../../utils/logger';
@@ -56,7 +56,7 @@ async function generateTokens(user, client) {
 /**
  * Exchange username & password for access token.
  */
-server.exchange(oauth2orize.exchange.password(async(client, username, password, scope) => {
+server.exchange(oauth2orize.exchange.password(async (client, username, password, scope) => {
   if (!client.trusted) return false;
   try {
     const user = await User.findOne({ username: username.toLowerCase() });
@@ -74,7 +74,7 @@ server.exchange(oauth2orize.exchange.password(async(client, username, password, 
 /**
  * Exchange refreshToken for access token.
  */
-server.exchange(oauth2orize.exchange.refreshToken(async(client, refreshToken, scope) => {
+server.exchange(oauth2orize.exchange.refreshToken(async (client, refreshToken, scope) => {
   if (!client.trusted) return false;
 
   const refreshTokenHash = RefreshToken.encryptToken(refreshToken);

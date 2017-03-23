@@ -64,7 +64,7 @@ export function connectDb(dbURI) {
  * @returns {*}
  * @private
  */
-const _loadModelFixture = async(modelName, removeData = false) => {
+const _loadModelFixture = async (modelName, removeData = false) => {
   const model = mongoose.model(modelName);
   const fixture = fixtures[modelName.toLocaleLowerCase()];
   if (!model || !fixture) {

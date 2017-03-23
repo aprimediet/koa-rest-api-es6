@@ -11,7 +11,7 @@ import _log from '../utils/logger';
 const log = _log(module);
 
 export default function () {
-  return async(ctx, next) => {
+  return async (ctx, next) => {
     try {
       await next();
     } catch (err) {
